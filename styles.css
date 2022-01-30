@@ -53,11 +53,12 @@ button.functions{
     flex-direction: column;
 }
 .calc-display{
-    font-size: 25px;
+    font-size: 35px;
     background-color: rgb(115, 192, 184);
     border: black solid 6px;
     text-align: right;
     padding-right: 10px;
     margin: 30px;
+    height: 80px;
     font-weight: bold;
 }
