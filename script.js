@@ -83,14 +83,12 @@ function buttonHandler(buttonText){
     else if(buttonText==="+" || buttonText==="-" || buttonText==="x" || buttonText==="÷"){
         operatorsPressed ++;
         if(operatorsPressed===1){
-            oneDecimal = true;
             whichNum = "right";
             currentOperator = buttonText;
             updateDisplay(buttonText)
         }
         else{
             if(rightNum!=""){
-                oneDecimal = true;
                 let total = operate(currentOperator, parseFloat(leftNum), parseFloat(rightNum));
                 let totalDisplay = document.querySelector(".total-display");
                 let workingDisplay = document.querySelector(".working-display");
@@ -104,8 +102,13 @@ function buttonHandler(buttonText){
         }
     }
     else if(buttonText==="="){
-        oneDecimal = true;
-        if(rightNum!="" && currentOperator!=""){
+        if(currentOperator==="÷" && rightNum === "0"){
+            let totalDisplay = document.querySelector(".total-display");
+            totalDisplay.textContent = "ERROR";
+            let header = document.querySelector("h1");
+            header.textContent = "Trying to divide by 0? Nice try..."
+        }
+        else if(rightNum!="" && currentOperator!=""){
             let totalDisplay = document.querySelector(".total-display");
             let workingDisplay = document.querySelector(".working-display");
             let total = operate(currentOperator, parseFloat(leftNum), parseFloat(rightNum));
