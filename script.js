@@ -74,3 +74,13 @@ buttons.forEach(button => {
         buttonHandler(button.textContent);
     });
 })
+
+document.addEventListener("keydown", function(event){
+    let nums = [0,1,2,3,4,5,6,7,8,9]
+    if(event.key in nums){
+        buttonHandler(event.key);
+    }
+    else if(event.key==="+" || event.key==="-" || event.key==="x" || event.key==="÷"){
+        buttonHandler(event.key);
+    }
+})
