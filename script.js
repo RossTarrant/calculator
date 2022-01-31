@@ -33,9 +33,8 @@ function operate(operator, x, y){
 
 
 function updateDisplay(buttonText){
-    let display = document.querySelector(".display");
-    displayText = display.textContent;
-    displayText = displayText + buttonText;
+    let display = document.querySelector(".working-display");
+    displayText = `${leftNum}${currentOperator}${rightNum}`
     display.textContent = displayText;
 }
 
@@ -44,28 +43,55 @@ function buttonHandler(buttonText){
     let nums = [0,1,2,3,4,5,6,7,8,9]
     let operators = ["="]
     if(buttonText in nums){
+        if (whichNum==="left"){
+            leftNum = leftNum + buttonText;
+        }
+        else{
+            rightNum = rightNum + buttonText;
+        }
         updateDisplay(buttonText);
     }
     else if(buttonText==="+" || buttonText==="-" || buttonText==="x" || buttonText==="÷"){
-        currentOperator = buttonText;
-        if(whichNum==="left"){
-            let display = document.querySelector(".display");
-            leftNum = parseInt(display.textContent);
-            whichNum==="right";
+        operatorsPressed ++;
+        if(operatorsPressed===1){
+            whichNum = "right";
+            currentOperator = buttonText;
+            updateDisplay(buttonText)
         }
-        updateDisplay(buttonText)
+        else{
+            if(rightNum!=""){
+                let total = operate(currentOperator, parseInt(leftNum), parseInt(rightNum));
+                let totalDisplay = document.querySelector(".total-display");
+                let workingDisplay = document.querySelector(".working-display");
+                currentOperator = buttonText;
+                workingDisplay.textContent = `${total}${currentOperator}`
+                leftNum = total;
+                rightNum = "";
+                currentOperator = buttonText;
+                totalDisplay.textContent = `${total}`;
+            }
+        }
     }
     else if(buttonText==="="){
-        let display = document.querySelector(".display");
-        rightNum = parseInt(display.textContent.split(currentOperator)[1]);
-        display.textContent = operate(currentOperator, leftNum, rightNum);
+        if(rightNum!="" && currentOperator!=""){
+            let totalDisplay = document.querySelector(".total-display");
+            let workingDisplay = document.querySelector(".working-display");
+            let total = operate(currentOperator, parseInt(leftNum), parseInt(rightNum));
+            totalDisplay.textContent = total;
+            workingDisplay.textContent = workingDisplay.textContent + "="
+            leftNum = total;
+            rightNum = "";
+            currentOperator = "";
+            operatorsPressed = 0;
+        }
     }
 }
 
-let leftNum = 0;
-let rightNum = 0;
+let leftNum = "";
+let rightNum = "";
 let whichNum = "left";
 let currentOperator = "";
+let operatorsPressed = 0;
 
 const buttonsDiv = document.querySelector(".calc-buttons");
 const buttons = buttonsDiv.querySelectorAll("button");

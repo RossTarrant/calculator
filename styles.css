@@ -57,8 +57,11 @@ button.functions{
     background-color: rgb(115, 192, 184);
     border: black solid 6px;
     text-align: right;
-    padding-right: 10px;
+    padding: 20px;
     margin: 30px;
-    height: 80px;
+    height: 90px;
     font-weight: bold;
+}
+.total-display{
+    font-size: 55px;
 }
