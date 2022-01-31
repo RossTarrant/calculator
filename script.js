@@ -32,17 +32,46 @@ function operate(operator, x, y){
 }
 
 
-function updateDisplay(buttonText){
+function updateDisplay(){
     let display = document.querySelector(".working-display");
     displayText = `${leftNum}${currentOperator}${rightNum}`
     display.textContent = displayText;
 }
 
 
+function back(){
+    if(whichNum==="left" && leftNum!=""){
+        leftNum = leftNum.substring(0, leftNum.length -1);
+    }
+    else if(whichNum==="right" && rightNum.length===0){
+        whichNum = "left";
+        currentOperator = "";
+        operatorsPressed = 0;
+    }
+    else{
+        rightNum = rightNum.substring(0, rightNum.length -1);
+    }
+    updateDisplay();
+}
+
+
+function clearDisplay(){
+    let totalDisplay = document.querySelector(".total-display");
+    let workingDisplay = document.querySelector(".working-display");
+    totalDisplay.textContent = "0";
+    workingDisplay.textContent = "Cleared";
+    leftNum = "";
+    rightNum = "";
+    whichNum = "left";
+    currentOperator = "";
+    operatorsPressed = 0;
+}
+
+
 function buttonHandler(buttonText){
     let nums = [0,1,2,3,4,5,6,7,8,9]
     let operators = ["="]
-    if(buttonText in nums){
+    if(buttonText in nums || buttonText === "."){
         if (whichNum==="left"){
             leftNum = leftNum + buttonText;
         }
@@ -54,13 +83,15 @@ function buttonHandler(buttonText){
     else if(buttonText==="+" || buttonText==="-" || buttonText==="x" || buttonText==="÷"){
         operatorsPressed ++;
         if(operatorsPressed===1){
+            oneDecimal = true;
             whichNum = "right";
             currentOperator = buttonText;
             updateDisplay(buttonText)
         }
         else{
             if(rightNum!=""){
-                let total = operate(currentOperator, parseInt(leftNum), parseInt(rightNum));
+                oneDecimal = true;
+                let total = operate(currentOperator, parseFloat(leftNum), parseFloat(rightNum));
                 let totalDisplay = document.querySelector(".total-display");
                 let workingDisplay = document.querySelector(".working-display");
                 currentOperator = buttonText;
@@ -73,10 +104,11 @@ function buttonHandler(buttonText){
         }
     }
     else if(buttonText==="="){
+        oneDecimal = true;
         if(rightNum!="" && currentOperator!=""){
             let totalDisplay = document.querySelector(".total-display");
             let workingDisplay = document.querySelector(".working-display");
-            let total = operate(currentOperator, parseInt(leftNum), parseInt(rightNum));
+            let total = operate(currentOperator, parseFloat(leftNum), parseFloat(rightNum));
             totalDisplay.textContent = total;
             workingDisplay.textContent = workingDisplay.textContent + "="
             leftNum = total;
@@ -109,4 +141,14 @@ document.addEventListener("keydown", function(event){
     else if(event.key==="+" || event.key==="-" || event.key==="x" || event.key==="÷"){
         buttonHandler(event.key);
     }
+})
+
+const clearButton = document.querySelector(".clear");
+clearButton.addEventListener("click", () => {
+    clearDisplay();
+})
+
+const backButton = document.querySelector(".back");
+backButton.addEventListener("click", () => {
+    back();
 })
